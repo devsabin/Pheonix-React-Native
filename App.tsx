@@ -29,7 +29,7 @@ const Box = (props: any) => {
 };
 
 function App(): JSX.Element {
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(10);
   const name = 'Harry';
 
   const handleBox = (number: any) => {
@@ -52,9 +52,9 @@ function App(): JSX.Element {
       {/* <Text>Hello world</Text> */}
       {/* <FlexBox />; */}
       {/* <MultipleChoiceQuestion /> */}
-      {/* <Dulingo /> */}
-      <Text style={{fontSize: 40}}>Count {counter}</Text>
-      <Button
+      <Dulingo />
+      {/* <Text style={{fontSize: 40}}>Count {counter}</Text> */}
+      {/* <Button
         title="increment"
         onPress={() => {
           setCounter(counter + 1);
@@ -67,7 +67,7 @@ function App(): JSX.Element {
             setCounter(counter - 1);
           }
         }}
-      />
+      /> */}
 
       {/* <FlatListDemo /> */}
       {/* {[1, 2, 3, 4].map(x => {

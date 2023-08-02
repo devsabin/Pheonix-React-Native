@@ -24,10 +24,31 @@ const ImageOption = (props: any) => {
   );
 };
 
+const ProgressBar = ({progress}: any) => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        height: 30,
+        backgroundColor: 'lightgrey',
+        borderRadius: 40,
+      }}>
+      <View
+        style={{
+          backgroundColor: 'orange',
+          height: 30,
+          width: `${progress * 100}%`,
+          borderRadius: 40,
+        }}
+      />
+    </View>
+  );
+};
+
 // useState, useEffect ,props
 
 export const Dulingo = () => {
-  const [questionIndex, setCurrentIndex] = useState(1);
+  const [questionIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<any>(null);
 
   const handlePress = (name: string) => {
@@ -35,6 +56,17 @@ export const Dulingo = () => {
   };
   return (
     <View style={styles.root}>
+      <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 3}}>
+          <ProgressBar progress={questionIndex / questions.length} />
+        </View>
+        <View style={{flex: 1}}>
+          <Text>Heart Image 0</Text>
+          {/* Display heart Image
+            show life 5 using useState
+          */}
+        </View>
+      </View>
       <CustomText name={questions[questionIndex].question} />
       <View style={styles.optionsContainer}>
         {questions[questionIndex].options.map(option => {
@@ -53,12 +85,18 @@ export const Dulingo = () => {
           return <ImageOption name={option.text} />;
         })} */}
       </View>
-
       <Pressable
         disabled={selectedOption == null}
         onPress={() => {
-          setCurrentIndex(questionIndex + 1);
-          questionIndex + 1;
+          if (selectedOption['correct']) {
+            setCurrentIndex(questionIndex + 1);
+            questionIndex + 1;
+          } else {
+            // decrease life if user choses wrong answer
+            // check if life ==0 then display Alert with message game over
+            // Restart game
+            Alert.alert('Wrong answer');
+          }
         }}
         style={{
           backgroundColor: selectedOption == null ? 'grey' : 'green',
