@@ -8,7 +8,7 @@ const CustomText = (props: any) => {
 };
 
 const ImageOption = (props: any) => {
-  const {name, isSelected = false, image, handlePress} = props;
+  const {name, isSelected = true, image, handlePress} = props;
   return (
     <Pressable
       onPress={() => {
@@ -50,6 +50,7 @@ const ProgressBar = ({progress}: any) => {
 export const Dulingo = () => {
   const [questionIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<any>(null);
+  const [life, setLife] = useState(3);
 
   const handlePress = (name: string) => {
     console.warn(name);
@@ -61,20 +62,23 @@ export const Dulingo = () => {
           <ProgressBar progress={questionIndex / questions.length} />
         </View>
         <View style={{flex: 1}}>
-          <Text>Heart Image 0</Text>
+          <Text style={{fontSize: 25, fontWeight: 'bold'}}> {life}</Text>
           {/* Display heart Image
             show life 5 using useState
           */}
         </View>
       </View>
-      <CustomText name={questions[questionIndex].question} />
+
+      <CustomText name={questions[questionIndex]?.question} />
       <View style={styles.optionsContainer}>
-        {questions[questionIndex].options.map(option => {
+        {questions[questionIndex]?.options?.map(option => {
           return (
+            // <Text>Image option</Text>
             <ImageOption
               name={option.text}
               image={option.image}
               handlePress={() => {
+                console.log(option);
                 setSelectedOption(option);
               }}
               isSelected={option.id === selectedOption?.id}
@@ -86,11 +90,28 @@ export const Dulingo = () => {
         })} */}
       </View>
       <Pressable
-        disabled={selectedOption == null}
+        disabled={selectedOption == null || life == 0}
         onPress={() => {
+          if (life <= 0) {
+            Alert.alert('Game Over');
+            return;
+          }
           if (selectedOption['correct']) {
-            setCurrentIndex(questionIndex + 1);
-            questionIndex + 1;
+            setCurrentIndex(() => questionIndex + 1);
+          } else {
+            //wrong answer
+            setLife(() => life - 1);
+          }
+          return;
+          // if (questionIndex >= questions.length) {
+          //   setCurrentIndex(() => 0);
+          //   Alert.alert('Game completed');
+          // } else {
+          //   setCurrentIndex(() => questionIndex + 1);
+          // }
+          if (selectedOption['correct']) {
+            // total question = questions.length 4
+            // current question index = questionIndex 4
           } else {
             // decrease life if user choses wrong answer
             // check if life ==0 then display Alert with message game over
@@ -99,7 +120,8 @@ export const Dulingo = () => {
           }
         }}
         style={{
-          backgroundColor: selectedOption == null ? 'grey' : 'green',
+          backgroundColor:
+            selectedOption == null || life == 0 ? 'grey' : 'green',
           padding: 10,
           marginTop: 10,
           borderRadius: 20,
@@ -144,7 +166,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   selectedContainer: {
-    backgroundColor: '#81D5fe',
+    backgroundColor: 'red',
   },
   selectedText: {
     color: '#40BEF7',

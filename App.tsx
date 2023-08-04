@@ -28,6 +28,12 @@ const Box = (props: any) => {
   );
 };
 
+// Topics for Sunday:
+/**
+ * Flatlist, React navigation,
+ * State Management: Redux toolkit, Context API
+ */
+
 function App(): JSX.Element {
   const [counter, setCounter] = useState(10);
   const name = 'Harry';
